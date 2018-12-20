@@ -43,11 +43,40 @@ app.get('/classlist/add', (req, res) => {
 });
 
 app.get('/classlist/clear', (req, res) => {
-    res.send('called CLEAR')
+    save([], (err, data) => {
+        if (err) {
+            res.status(500)
+            res.json({
+                'message': "something went wrong!",
+                "err": err,
+            });
+            return;
+        }
+
+        res.json({
+            "message": "success",
+        });
+
+    })
 });
 
 app.get('/classlist/load', (req, res) => {
-    res.send('called LOAD')
+    load((err, data) => {
+        if (err) {
+            res.status(500)
+            res.json({
+                'message': "something went wrong!",
+                "err": err,
+            });
+            return;
+        }
+
+        res.json({
+            "message": "success",
+            data,
+        });
+
+    })
 })
 
 app.listen(port, () => {

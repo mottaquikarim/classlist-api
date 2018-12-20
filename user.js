@@ -20,7 +20,7 @@ const load = (cb) => {
     console.log('in LOAD!')
     fs.readFile(FILE_NAME, 'utf8', (err, data) => {
         if (!data) {
-            cb([])
+            cb(err, [])
             return;
             
         }
@@ -31,7 +31,8 @@ const load = (cb) => {
             const bits = row.split(',');
             users.push({name: bits[0], age: parseInt(bits[1], 10)})
         }
-        cb(users)
+        console.log('ABOUT TO RUN')
+        cb(err, users)
     })
 }
 
@@ -40,11 +41,13 @@ const add = (row, cb) => {
     // update with new row
     // save new content
 
-    load(currentUsers => {
+    load((err, currentUsers) => {
+        console.log(currentUsers)
         currentUsers.push(row);
         save(currentUsers, (err, res) => {
+            console.log(err)
             // we done - new content saved
-            cb(true, res)
+            cb(err, res)
         });
     })
 }
